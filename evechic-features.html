@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EveChic Closet — สรุปฟีเจอร์ทั้งระบบ</title>
+  <style>
+    :root {
+      --primary: #1a1a1a;
+      --accent: #e64980;
+      --gold: #b8860b;
+      --bg: #fafafa;
+      --card: #ffffff;
+      --border: #eee;
+      --text: #222;
+      --sub: #777;
+      --green: #10b981;
+      --light-green: #ecfdf5;
+      --pink-bg: #fdf2f8;
+      --blue-bg: #eff6ff;
+      --yellow-bg: #fffbeb;
+      --purple-bg: #f5f3ff;
+      --gray-bg: #f3f4f6;
+      --orange-bg: #fff7ed;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', 'Noto Sans Thai', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── COVER ─── */
+    .cover {
+      background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+      color: #fff;
+      padding: 60px 32px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent));
+    }
+    .cover .brand { font-size: 40px; font-weight: 800; letter-spacing: 6px; }
+    .cover .tagline { font-size: 18px; color: rgba(255,255,255,0.65); margin-top: 8px; letter-spacing: 2px; }
+    .cover .sub { font-size: 14px; color: rgba(255,255,255,0.4); margin-top: 20px; }
+
+    /* ─── SECTION TABS ─── */
+    .section-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      background: var(--card);
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .section-tab {
+      padding: 16px 40px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: var(--sub);
+      user-select: none;
+    }
+    .section-tab:hover, .section-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* ─── TAB CONTENT ─── */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ─── WRAPPER ─── */
+    .wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+    /* ─── SUMMARY BOX ─── */
+    .summary-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+    }
+    .summary-box h2 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+    }
+    .summary-item {
+      text-align: center;
+      padding: 14px 8px;
+      border-radius: 12px;
+      background: var(--gray-bg);
+    }
+    .summary-item .num { font-size: 28px; font-weight: 800; color: var(--primary); }
+    .summary-item .lbl { font-size: 12px; color: var(--sub); margin-top: 2px; }
+
+    /* ─── MODULE ─── */
+    .module { margin-bottom: 40px; }
+    .module-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .module-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    .module-title { font-size: 22px; font-weight: 700; }
+    .module-desc { font-size: 14px; color: var(--sub); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 12px;
+    }
+    .card h3 {
+      font-size: 16px; font-weight: 600;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* ─── CHECK LIST ─── */
+    ul.feat { list-style: none; }
+    ul.feat li {
+      padding: 4px 0;
+      font-size: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    ul.feat li .icon {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      margin-top: 3px;
+    }
+
+    /* ─── TAG ─── */
+    .tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .tag-done { background: #d1fae5; color: #065f46; }
+    .tag-admin { background: #dbeafe; color: #1e40af; }
+    .tag-api { background: #f3e8ff; color: #6b21a8; }
+    .tag-new { background: #fef3c7; color: #92400e; }
+
+    /* ─── STATUS TAGS ─── */
+    .status-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .status-tag {
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .st-yellow { background: #fef3c7; color: #92400e; }
+    .st-green { background: #d1fae5; color: #065f46; }
+    .st-red { background: #fee2e2; color: #991b1b; }
+    .st-blue { background: #dbeafe; color: #1e40af; }
+    .st-orange { background: #ffedd5; color: #9a3412; }
+    .st-purple { background: #f3e8ff; color: #6b21a8; }
+
+    /* ─── DIVIDER ─── */
+    .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+    /* ─── SECTION HEADER ─── */
+    .section-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #333 100%);
+      color: #fff;
+      padding: 32px;
+      border-radius: 16px;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .section-header h2 { font-size: 26px; font-weight: 800; letter-spacing: 2px; }
+    .section-header p { color: rgba(255,255,255,0.6); margin-top: 8px; font-size: 14px; }
+
+    /* ─── API TABLE ─── */
+    .api-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .api-table th {
+      background: var(--gray-bg);
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--sub);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .api-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .api-table code {
+      background: var(--gray-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .method-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .method-get { background: #3b82f6; }
+    .method-post { background: #10b981; }
+    .method-put { background: #f59e0b; }
+    .method-delete { background: #ef4444; }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--sub);
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .cover .brand { font-size: 26px; letter-spacing: 3px; }
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .section-tab { padding: 12px 16px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ COVER ══════════════════ -->
+<div class="cover">
+  <div class="brand">EVECHIC CLOSET</div>
+  <div class="tagline">Fashion E-Commerce — Full Feature Summary</div>
+  <div class="sub">
+    🦋 by Phunnapus &nbsp;|&nbsp; Frontend + Admin + API &nbsp;|&nbsp; อัปเดต 6 มิ.ย. 2569
+  </div>
+</div>
+
+<!-- ══════════════════ NAV TABS ══════════════════ -->
+<div class="section-tabs">
+  <div class="section-tab active" data-tab="frontend">📱 Frontend (แอปมือถือ)</div>
+  <div class="section-tab" data-tab="admin">🖥️ Admin (แดชบอร์ด)</div>
+</div>
+
+<div class="wrap">
+
+  <!-- ══════════════════════════════════════════════════════════════════ -->
+  <!--                     FRONTEND (MOBILE APP)                         -->
+  <!-- ══════════════════════════════════════════════════════════════════ -->
+  <div class="tab-content active" id="tab-frontend">
+  <div class="section-header">
+    <h2>📱 FRONTEND — แอปมือถือ</h2>
+    <p>React Native + Expo &nbsp;|&nbsp; iOS & Android &nbsp;|&nbsp; ภาษาไทย</p>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary-box">
+    <h2>📊 ภาพรวม Frontend</h2>
+    <div class="summary-grid">
+      <div class="summary-item"><div class="num">14</div><div class="lbl">หน้าจอ</div></div>
+      <div class="summary-item"><div class="num">5</div><div class="lbl">Tab หลัก</div></div>
+      <div class="summary-item"><div class="num">3</div><div class="lbl">วิธีชำระเงิน</div></div>
+      <div class="summary-item"><div class="num">3</div><div class="lbl">วิธีจัดส่ง</div></div>
+      <div class="summary-item"><div class="num">8</div><div class="lbl">สถานะออเดอร์</div></div>
+    </div>
+  </div>
+
+  <!-- 1. SPLASH -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #fdf2f8;">🦋</div>
+      <div><div class="module-title">หน้าเปิดแอป (Splash/Welcome)</div><div class="module-desc">ประสบการณ์แรกที่ผู้ใช้เห็น</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>แสดงภาพพื้นหลังเต็มจอพร้อม Animation สวยงาม</li>
+        <li><span class="icon">✓</span>แสดงชื่อแบรนด์ "EVECHIC CLOSET by Phunnapus"</li>
+        <li><span class="icon">✓</span>ปุ่ม "Get Started" เข้าสู่หน้าหลักทันที — <strong>ไม่บังคับล็อกอิน</strong></li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 2. AUTH -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #eff6ff;">🔐</div>
+      <div><div class="module-title">ระบบสมาชิก</div><div class="module-desc">สมัคร, เข้าสู่ระบบ, จัดการโปรไฟล์</div></div>
+    </div>
+    <div class="card">
+      <h3>📝 สมัคร / เข้าสู่ระบบ</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span>สมัครด้วยอีเมล + รหัสผ่าน</li>
+        <li><span class="icon">✓</span>เข้าสู่ระบบด้วยอีเมล + รหัสผ่าน (แสดง/ซ่อนรหัสผ่าน)</li>
+        <li><span class="icon">✓</span>ลืมรหัสผ่าน — รีเซ็ตผ่านอีเมล</li>
+        <li><span class="icon">✓</span>JWT Token เก็บใน SecureStore</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>👤 โปรไฟล์ผู้ใช้</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span>แสดง Avatar, ชื่อ, อีเมล</li>
+        <li><span class="icon">✓</span>เปลี่ยนรหัสผ่าน</li>
+        <li><span class="icon">✓</span>ออกจากระบบ (ยืนยันก่อนออก)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 3. HOME -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #fdf2f8;">🏠</div>
+      <div><div class="module-title">หน้าหลัก (Home)</div><div class="module-desc">Banner, สินค้าแนะนำ, โปรโมชั่น</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span><strong>① Hero Banner Carousel</strong> — สไลด์โฆษณา/โปรโมชั่นด้านบน + จุด indicator</li>
+        <li><span class="icon">✓</span><strong>② Featured Collection</strong> — รูปใหญ่พร้อมสินค้าแนะนำ 3 ชิ้นวางซ้อน</li>
+        <li><span class="icon">✓</span><strong>③ Banner โปรโมชั่น</strong> — สไลด์แบนเนอร์ + ปุ่ม "ช้อปเลย"</li>
+        <li><span class="icon">✓</span><strong>④ สินค้าทั้งหมด</strong> — Grid 3 คอลัมน์: รูป, ชื่อ, ราคา, % ลด, ปุ่มหัวใจ</li>
+        <li><span class="icon">✓</span>Pull-to-refresh รีเฟรชข้อมูล</li>
+        <li><span class="icon">✓</span>Infinite Scroll โหลดสินค้าเพิ่มอัตโนมัติ</li>
+        <li><span class="icon">✓</span>ไอคอน Notification แจ้งเตือน (จุดแดงเมื่อมีข้อความใหม่)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 4. PRODUCT DETAIL -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #f5f3ff;">👗</div>
+      <div><div class="module-title">รายละเอียดสินค้า</div><div class="module-desc">ดูสินคะเต็มรูปแบบ + เลือกตัวเลือก + เพิ่มลงตะกร้า</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>สไลด์รูปภาพสินค้าหลายรูป + Thumbnail + Indicator</li>
+        <li><span class="icon">✓</span>ชื่อ, แบรนด์, ราคา, ราคาตัด (% ลด)</li>
+        <li><span class="icon">✓</span><strong>เลือกไซส์</strong> — S, M, L, XL ฯลฯ</li>
+        <li><span class="icon">✓</span><strong>เลือกสี</strong> — จุดสี hex code</li>
+        <li><span class="icon">✓</span><strong>เลือกจำนวน</strong> — ปุ่ม + / -</li>
+        <li><span class="icon">✓</span>⭐ คะแนนเฉลี่ย + กราฟแท่งสัดส่วน + รีวิวผู้ซื้อจริง</li>
+        <li><span class="icon">✓</span>ปุ่ม "เพิ่มไปยังรถเข็น" (ต้องล็อกอินก่อน)</li>
+        <li><span class="icon">✓</span>ปุ่มหัวใจเพิ่มรายการโปรด</li>
+        <li><span class="icon">✓</span>แนะนำ "สินค้าที่คุณอาจสนใจ" เลื่อนแนวนอน</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 5. SEARCH -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #eff6ff;">🔍</div>
+      <div><div class="module-title">ค้นหาสินค้า</div><div class="module-desc">หาสินค้าได้รวดเร็ว</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>ค้นหาแบบ Real-time (Debounce 400ms)</li>
+        <li><span class="icon">✓</span>แสดง "คำค้นหายอดนิยม" (เสื้อ, Old Money, Y2K ฯลฯ)</li>
+        <li><span class="icon">✓</span>ผลลัพธ์ Grid 2 คอลัมน์ + ราคา + % ลด</li>
+        <li><span class="icon">✓</span>ล้างการค้นหาด้วยปุ่ม ✕</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 6. CATEGORIES -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #ecfdf5;">📂</div>
+      <div><div class="module-title">หมวดหมู่สินค้า</div><div class="module-desc">เลือกดูสินค้าตามประเภท</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>Grid 3 คอลัมน์ แสดงหมวดหมู่ทั้งหมด</li>
+        <li><span class="icon">✓</span>แตะที่หมวดหมู่ → กรองสินค้าในหมวดนั้น</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 7. CART -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #fffbeb;">🛒</div>
+      <div><div class="module-title">ตะกร้าสินค้า</div><div class="module-desc">จัดการสินค้าก่อนสั่งซื้อ</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>แสดงรายการ: รูป, ชื่อ, ไซส์, สี, ราคา</li>
+        <li><span class="icon">✓</span>ปรับจำนวน + / -</li>
+        <li><span class="icon">✓</span>ลบสินค้า (ยืนยันก่อนลบ)</li>
+        <li><span class="icon">✓</span>Checkbox เลือกสินค้า + "เลือกทั้งหมด"</li>
+        <li><span class="icon">✓</span>ยอดรวมเฉพาะสินค้าที่เลือก</li>
+        <li><span class="icon">✓</span>Badge จำนวนบนไอคอนตะกร้า</li>
+        <li><span class="icon">✓</span>Zustand Cart Store ซิงค์กับ API</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 8. CHECKOUT -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #eff6ff;">💳</div>
+      <div><div class="module-title">ขั้นตอนสั่งซื้อ (Checkout)</div><div class="module-desc">3 ขั้นตอน: จัดส่ง → ชำระเงิน → ยืนยัน</div></div>
+    </div>
+    <div class="card">
+      <h3>📍 ขั้นที่ 1 — ที่อยู่จัดส่ง</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span>ชื่อ, ที่อยู่, อำเภอ, จังหวัด, รหัสไปรษณีย์, เบอร์โทร</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🚚 เลือกวิธีจัดส่ง</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span>จัดส่งฟรี (3-7 วัน) / ธรรมดา 23฿ (4-6 วัน) / เร็ว 40฿ (2-3 วัน)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>💳 ขั้นที่ 2 — ชำระเงิน</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span>เงินสด (COD) / บัตรเครดิต / พร้อมเพย์-โอนเงิน</li>
+        <li><span class="icon">✓</span>สรุปรายการสินค้า + ราคา + ค่าจัดส่ง + ยอดรวม</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>✅ ขั้นที่ 3 — สั่งซื้อสำเร็จ</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span>หน้าสำเร็จ + ข้อความขอบคุณ + ปุ่มดูออเดอร์ / กลับไปซื้อต่อ</li>
+        <li><span class="icon" style="background: #ef4444;">!</span><strong style="color: #dc2626;">⏰ รอชำระเงินไม่เกิน 15 นาที</strong> — หากไม่ชำระภายใน 15 นาที ระบบจะ<strong>ยกเลิกรายการอัตโนมัติ</strong> + คืนสต็อกสินค้า + แจ้งเตือนลูกค้า</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 9. ORDERS -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #f5f3ff;">📦</div>
+      <div><div class="module-title">ระบบคำสั่งซื้อ</div><div class="module-desc">ติดตามสถานะได้ตลอดเวลา</div></div>
+    </div>
+    <div class="card">
+      <h3>📋 รายการคำสั่งซื้อ</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span>กรองตามสถานะ: รอชำระเงิน / รอจัดส่ง / ปิดแล้ว</li>
+        <li><span class="icon">✓</span>แสดง: หมายเลข, วันที่, สินค้า, ยอดรวม, สถานะ</li>
+        <li><span class="icon">✓</span>Pull-to-refresh</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📊 สถานะคำสั่งซื้อ (8 สถานะ)</h3>
+      <div class="status-row">
+        <span class="status-tag st-yellow">🟡 รอชำระเงิน</span>
+        <span class="status-tag st-yellow">🟡 ยืนยันแล้ว</span>
+        <span class="status-tag st-yellow">🟡 กำลังเตรียม</span>
+        <span class="status-tag st-blue">🔵 จัดส่งแล้ว</span>
+        <span class="status-tag st-green">🟢 จัดส่งสำเร็จ</span>
+        <span class="status-tag st-red">🔴 ยกเลิก</span>
+        <span class="status-tag st-red">🔴 คืนเงิน</span>
+        <span class="status-tag st-orange">🟠 มีปัญหารอแก้ไข</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🚚 ติดตามพัสดุ (Tracking)</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span>Timeline สถานะ 6 ขั้น + วัน-เวลา</li>
+        <li><span class="icon">✓</span>ข้อมูลผู้ขนส่ง + หมายเลขติดตาม + ปุ่มคัดลอก</li>
+        <li><span class="icon">✓</span>"🎯 คาดว่าจะได้รับภายใน"</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 10. WISHLIST -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #fdf2f8;">❤️</div>
+      <div><div class="module-title">รายการโปรด (Wishlist)</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>Grid 2 คอลัมน์: รูป, ชื่อ, แบรนด์, ราคา, % ลด</li>
+        <li><span class="icon">✓</span>กดหัวใจลบออก (ยืนยันก่อนลบ)</li>
+        <li><span class="icon">✓</span>แตะสินค้า → หน้ารายละเอียด</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 11. NOTIFICATIONS -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #fffbeb;">🔔</div>
+      <div><div class="module-title">ระบบแจ้งเตือน</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>รายการแจ้งเตือน: หัวข้อ, ข้อความ, เวลา</li>
+        <li><span class="icon">✓</span>แจ้งเตือนที่ยังไม่อ่าน → จุดสีชมพู + พื้นหลังต่าง</li>
+        <li><span class="icon">✓</span>ปุ่ม "อ่านทั้งหมด" / แตะเพื่ออ่าน</li>
+        <li><span class="icon">✓</span>ประเภท: ยืนยันออเดอร์ • จัดส่ง • ชำระเงิน • โปรโมชั่น • ระบบ</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 12. ADDRESSES -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #ecfdf5;">📍</div>
+      <div><div class="module-title">สมุดที่อยู่จัดส่ง</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>เพิ่มที่อยู่ใหม่ (ตั้งชื่อ Label เช่น "บ้าน", "ออฟฟิศ")</li>
+        <li><span class="icon">✓</span>แก้ไข / ลบ / ตั้งเป็นที่อยู่หลัก</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════ -->
+  <!--                     ADMIN DASHBOARD                               -->
+  <!-- ══════════════════════════════════════════════════════════════════ -->
+  </div><!-- end tab-frontend -->
+
+  <div class="tab-content" id="tab-admin">
+  <div class="section-header">
+    <h2>🖥️ ADMIN — แดชบอร์ดผู้ดูแลระบบ</h2>
+    <p>Next.js 15 + Tailwind CSS &nbsp;|&nbsp; ภาษาไทย &nbsp;|&nbsp; รันที่ localhost:3201</p>
+  </div>
+
+  <div class="summary-box">
+    <h2>📊 ภาพรวม Admin</h2>
+    <div class="summary-grid">
+      <div class="summary-item"><div class="num">9</div><div class="lbl">หน้าจัดการ</div></div>
+      <div class="summary-item"><div class="num">15+</div><div class="lbl">API Routes</div></div>
+      <div class="summary-item"><div class="num">3</div><div class="lbl">Export CSV</div></div>
+      <div class="summary-item"><div class="num">8</div><div class="lbl">สถานะออเดอร์</div></div>
+      <div class="summary-item"><div class="num">✓</div><div class="lbl">Log ทุกการแก้ไข</div></div>
+    </div>
+  </div>
+
+  <!-- A1. DASHBOARD -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #fdf2f8;">📊</div>
+      <div><div class="module-title">Dashboard ภาพรวม</div><div class="module-desc">หน้าแรกของ Admin</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span><strong>Stats Cards</strong>: ออเดอร์วันนี้, รายได้วันนี้, รอชำระเงิน, สินค้าที่ขาย, ออเดอร์ทั้งหมด, รายได้ทั้งหมด</li>
+        <li><span class="icon">✓</span><strong>Quick Actions</strong>: รอพิมพ์ใบปะหน้า, รอยืนยัน, รอจัดส่ง</li>
+        <li><span class="icon">✓</span>สัดส่วนวิธีชำระเงิน (% แต่ละวิธี)</li>
+        <li><span class="icon">✓</span>กราฟรายได้รายเดือน (Monthly Chart)</li>
+        <li><span class="icon">✓</span>Top 10 สินค้าขายดี</li>
+        <li><span class="icon">✓</span>Top 10 ลูกค้า</li>
+        <li><span class="icon">✓</span>ตารางออเดอร์ล่าสุด</li>
+        <li><span class="icon">✓</span>⚠️ แจ้งเตือนรีวิวคะแนนต่ำ</li>
+        <li><span class="icon">✓</span>สินค้าที่เข้าชมมากที่สุด</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- A2. ORDERS -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #f5f3ff;">📦</div>
+      <div><div class="module-title">จัดการคำสั่งซื้อ</div><div class="module-desc">รายการ + รายละเอียด + แก้ไขได้</div></div>
+    </div>
+    <div class="card">
+      <h3>📋 หน้ารายการออเดอร์</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span>Tab: ทั้งหมด / ชำระแล้ว / รอพิมพ์ใบปะหน้า</li>
+        <li><span class="icon">✓</span>กรองสถานะ 8 สถานะ (pending → issue)</li>
+        <li><span class="icon">✓</span>ค้นหา: เลขออเดอร์, ชื่อ, อีเมล</li>
+        <li><span class="icon">✓</span>กรองวันที่ (DateRangeFilter)</li>
+        <li><span class="icon">✓</span>เลือกหลายออเดอร์ + พิมพ์ใบปะหน้ารวม</li>
+        <li><span class="icon">✓</span>Export CSV</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📄 หน้ารายละเอียดออเดอร์</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span><strong>Dropdown เปลี่ยนสถานะ</strong> พร้อม log ทุกการเปลี่ยนแปลง</li>
+        <li><span class="icon">✓</span>สถานะ <strong>"มีปัญหารอแก้ไข" (issue)</strong> — พร้อมช่องใส่สาเหตุ</li>
+        <li><span class="icon">✓</span><strong>แก้ไขที่อยู่จัดส่ง</strong> (Modal)</li>
+        <li><span class="icon">✓</span><strong>แก้ไขรายการสินค้า</strong> — เพิ่ม/ลด/ลบสินค้าได้</li>
+        <li><span class="icon">✓</span><strong>หมายเหตุแอดมิน</strong> — บันทึกโน้ตภายใน</li>
+        <li><span class="icon">✓</span><strong>ประวัติการแก้ไข</strong> — แสดงทุก action (edit_address, edit_items, status_change)</li>
+        <li><span class="icon">✓</span>พิมพ์ใบปะหน้าขนส่ง</li>
+        <li><span class="icon">✓</span>ข้อมูลลูกค้า, ที่อยู่, รายการสินค้า, สรุปราคา</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- A3. PRODUCTS -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #fdf2f8;">👗</div>
+      <div><div class="module-title">จัดการสินค้า</div><div class="module-desc">CRUD + กรอง + ตัวเลือกสินค้า</div></div>
+    </div>
+    <div class="card">
+      <h3>📋 หน้ารายการสินค้า</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span>Stock Summary: พร้อมขาย / ใกล้หมด (animate) / หมดแล้ว</li>
+        <li><span class="icon">✓</span>กรอง: สถานะ (ขาย/ซ่อน/ร่าง) + Stock + <strong>หมวดหมู่หลัก→ย่อย (optgroup)</strong></li>
+        <li><span class="icon">✓</span>ค้นหาชื่อสินค้า, แบรนด์</li>
+        <li><span class="icon">✓</span>Grid สินค้า: รูป, ชื่อ, แบรนด์, ราคา, % ลด, Badge สถานะ, Stock Badge</li>
+        <li><span class="icon">✓</span>Pagination 24 ชิ้น/หน้า</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>✏️ หน้าเพิ่ม/แก้ไขสินค้า</h3>
+      <ul class="feat">
+        <li><span class="icon">✓</span>ข้อมูลพื้นฐาน: ชื่อ (TH/EN), คำอธิบาย</li>
+        <li><span class="icon">✓</span>รูปภาพ: อัปโหลดหลายรูป + ตั้งรูปหลัก + Drag hover</li>
+        <li><span class="icon">✓</span><strong>ไซส์ — Modal สวยๆ</strong>: Preset chips (XS→FREE SIZE) + Custom input</li>
+        <li><span class="icon">✓</span><strong>สี — Modal สวยๆ</strong>: 16 สี preset + Color picker + Hex code + Preview</li>
+        <li><span class="icon">✓</span>ราคา: ราคาขาย + ราคาเปรียบเทียบ (แสดง % ลด auto)</li>
+        <li><span class="icon">✓</span>หมวดหมู่: Dropdown หมวดหมู่หลัก > ย่อย (Hierarchy)</li>
+        <li><span class="icon">✓</span>แบรนด์, SKU, จำนวนในสต็อก</li>
+        <li><span class="icon">✓</span>สถานะ: ร่าง / ขาย / ซ่อน</li>
+        <li><span class="icon">✓</span>ลบสินค้า (ConfirmModal สวยๆ)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- A4. CATEGORIES -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #ecfdf5;">📂</div>
+      <div><div class="module-title">จัดการหมวดหมู่</div><div class="module-desc">หมวดหมู่ 2 ระดับ (หลัก + ย่อย)</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>Tree view: หมวดหมู่หลัก → ย่อย (ย่อหน้า)</li>
+        <li><span class="icon">✓</span>แสดง: ชื่อ, slug, จำนวนสินค้า, จำนวนหมวดย่อย, ลำดับ, สถานะ</li>
+        <li><span class="icon">✓</span>เพิ่มหมวดย่อย / แก้ไข / ลบ (ConfirmModal)</li>
+        <li><span class="icon">✓</span>ฟอร์ม: ชื่อ TH/EN, คำอธิบาย, รูป, หมวดหลัก, ลำดับ, เปิด/ปิด</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- A5. BANNERS -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #f5f3ff;">🖼️</div>
+      <div><div class="module-title">จัดการแบนเนอร์</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>รายการแบนเนอร์: Preview, ชื่อ, คำบรรยาย, ลำดับ, สถานะ</li>
+        <li><span class="icon">✓</span>ลิงก์: สินค้า / หมวดหมู่ / URL ภายนอก</li>
+        <li><span class="icon">✓</span>ตั้งเวลาแสดงผล (เริ่ม - สิ้นสุด)</li>
+        <li><span class="icon">✓</span>เพิ่ม / แก้ไข / ลบ (ConfirmModal)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- A6. CUSTOMERS -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #eff6ff;">👥</div>
+      <div><div class="module-title">จัดการลูกค้า</div><div class="module-desc">CRM พื้นฐาน</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>ค้นหา: ชื่อ, อีเมล, เบอร์โทร, Line, FB</li>
+        <li><span class="icon">✓</span>กรองวันที่สมัคร</li>
+        <li><span class="icon">✓</span>ข้อมูล: ชื่อ, อีเมล, ที่อยู่, จำนวนออเดอร์, ยอดซื้อรวม, กลุ่ม (Regular/VIP/Wholesale)</li>
+        <li><span class="icon">✓</span>ระบบ Tags (Customer Tag Badges)</li>
+        <li><span class="icon">✓</span>เปิด/ปิดสถานะลูกค้า (ConfirmModal)</li>
+        <li><span class="icon">✓</span>แก้ไขข้อมูลลูกค้า</li>
+        <li><span class="icon">✓</span>Export CSV</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- A7. REVIEWS -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #fffbeb;">⭐</div>
+      <div><div class="module-title">จัดการรีวิวสินค้า</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>Summary: รีวิวทั้งหมด, คะแนนเฉลี่ย, รีวิวคะแนนต่ำ (< 3⭐)</li>
+        <li><span class="icon">✓</span>กรอง: ทั้งหมด, 5⭐→1⭐, ⚠️ ต่ำกว่า 3⭐</li>
+        <li><span class="icon">✓</span>แสดง: รูปสินค้า, ชื่อ, คะแนน, Badge คะแนนต่ำ, Verified purchase, รีวิว, รูปรีวิว</li>
+        <li><span class="icon">✓</span>ลบรีวิว (ConfirmModal)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- A8. SHIPPING LABELS -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #ecfdf5;">🏷️</div>
+      <div><div class="module-title">พิมพ์ใบปะหน้าขนส่ง</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>พิมพ์รายออเดอร์ หรือ หลายออเดอร์พร้อมกัน</li>
+        <li><span class="icon">✓</span>ดึงข้อมูลออเดอร์สถานะ confirmed/processing อัตโนมัติ</li>
+        <li><span class="icon">✓</span>Print-friendly CSS + Page breaks</li>
+        <li><span class="icon">✓</span>ดึงข้อมูลร้านจาก Settings (ที่อยู่ร้าน, โลโก้)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- A9. SETTINGS -->
+  <div class="module">
+    <div class="module-head">
+      <div class="module-icon" style="background: #f3f4f6;">⚙️</div>
+      <div><div class="module-title">ตั้งค่าร้านค้า</div></div>
+    </div>
+    <div class="card">
+      <ul class="feat">
+        <li><span class="icon">✓</span>ข้อมูลร้าน: ชื่อ, คำอธิบาย, บริษัท, เลขประจำตัวผู้เสียภาษี</li>
+        <li><span class="icon">✓</span>ช่องทางติดต่อ: เบอร์โทร, อีเมล, Facebook, Line, Instagram</li>
+        <li><span class="icon">✓</span>ที่อยู่จัดส่งร้าน</li>
+        <li><span class="icon">✓</span>ค่าจัดส่ง: ธรรมดา, เศรษฐกิจ, เร็ว, ขั้นต่ำส่งฟรี</li>
+        <li><span class="icon">✓</span>อัปโหลดโลโก้ร้าน</li>
+      </ul>
+    </div>
+  </div>
+
+  </div><!-- end tab-admin -->
+
+  <!-- ══════════════════ FOOTER ══════════════════ -->
+  <div class="footer">
+    <p style="font-size: 18px; font-weight: 700; letter-spacing: 3px; margin-bottom: 8px;">EVECHIC CLOSET</p>
+    <p>Fashion E-Commerce Full Stack &nbsp;•&nbsp; by Phunnapus</p>
+    <p style="margin-top: 12px; color: #aaa;">เอกสารสรุปฟีเจอร์ทั้งระบบ ณ วันที่ 6 มิถุนายน 2569</p>
+  </div>
+
+</div>
+
+<script>
+  // Tab switching — show/hide content
+  document.querySelectorAll('.section-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      const target = this.getAttribute('data-tab');
+      // Update tab active state
+      document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      // Show/hide content
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById('tab-' + target)?.classList.add('active');
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
